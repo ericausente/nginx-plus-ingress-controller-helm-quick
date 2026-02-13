@@ -54,7 +54,8 @@ helm install "$RELEASE" oci://ghcr.io/nginx/charts/nginx-ingress \
   --set controller.nginxplus=true \
   --set controller.serviceAccount.imagePullSecretName=regcred \
   --set controller.mgmt.licenseTokenSecretName=nplus-license \
-  --set controller.ingressClass.create=false
+  --set controller.ingressClass.create=false \ 
+  --set controller.enableSnippets=true
   
 
 echo "Installation complete."
