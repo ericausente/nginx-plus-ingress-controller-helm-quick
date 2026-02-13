@@ -33,6 +33,7 @@ kubectl get ns "$NAMESPACE" >/dev/null 2>&1 || kubectl create ns "$NAMESPACE"
 echo "Creating license secret..."
 kubectl -n "$NAMESPACE" create secret generic nplus-license \
   --from-file=license.jwt="$JWT_PATH" \
+  --type=nginx.com/license \
   --dry-run=client -o yaml | kubectl apply -f -
 
 echo "Creating registry secret..."
@@ -52,7 +53,9 @@ helm install "$RELEASE" oci://ghcr.io/nginx/charts/nginx-ingress \
   --set controller.image.tag=5.3.3 \
   --set controller.nginxplus=true \
   --set controller.serviceAccount.imagePullSecretName=regcred \
-  --set controller.mgmt.licenseTokenSecretName=nplus-license
+  --set controller.mgmt.licenseTokenSecretName=nplus-license \
+  --set controller.ingressClass.create=false
+  
 
 echo "Installation complete."
 
